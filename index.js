@@ -21,15 +21,16 @@ app.get("/jogos", async(req, res) =>{
     res.send({jogos});
 });
 
-app.get("/jogos/:id/", async(req, res) => {
-    const id = req.params.id;
-    if(!mongoose.Types.ObjectId.isValid(id)){
-        res.status(422).send({error:"Invalid ID"});
-        return;
-    } 
+app.get("/jogos/:id", async(req, res) =>{
+    const id=req.params.id;
+    if(mongoose.Types.ObjectId.isValid(id)){
+      res.status(422).send({error:"Invalid Id"});
+      return;  
+    }
+});
 
-
-   const jogo= await JogoSchema.findbyIdAndDelete(id);
+    app.post("/jogos/:id/", async(req, res) => {
+    const filme = await FilmeSchema.findById(id);
    if(!jogo) {
        res.status(404).send({erro:"game not found"});
        return;
@@ -85,10 +86,11 @@ if (!jogo) {
     return;
 }
 await JogoSchema.findByIdAndDelete(id);
-res.send({message:" successfully deleted game"});
+res.send({message:'successfully deleted game'})
 
 });
 
 app.listen(port, ()=>{
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
+    console.log(`Servidor rodando em http://localhost:${port}`)
+    }
+);
